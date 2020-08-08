@@ -15,6 +15,7 @@ namespace BolishGame
       CanRoll();
       GutterGame();
       AllOnes();
+      OneSpare();
     }
 
     #region Tests
@@ -57,10 +58,8 @@ namespace BolishGame
     {
       try
       {
-        for (int i = 0; i<20; i++)
-        {
-          game.Roll(0);
-        }
+        game.Reset();
+        RollMany(20, 0);
 
         if (game.Score() != 0)
         {
@@ -81,10 +80,8 @@ namespace BolishGame
     {
       try
       {
-        for (int i = 0; i < 20; i++)
-        {
-          game.Roll(1);
-        }
+        game.Reset();
+        RollMany(20, 1);
 
         if (game.Score() != 20)
         {
@@ -96,6 +93,46 @@ namespace BolishGame
       catch (Exception ex)
       {
         throw ex;
+      }
+    }
+    /// <summary>
+    /// Teste o caso em que ocorre um Spare no primeiro frame
+    /// </summary>
+    static private void OneSpare()
+    {
+      try
+      {
+        game.Reset();
+        game.Roll(5);
+        game.Roll(5);
+        game.Roll(3);
+        RollMany(17, 0);
+
+        if (game.Score() != 16)
+        {
+          throw new Exception(String.Concat(
+            "Não passou pelo OneSpare, Score = ", game.Score(), " que é diferente de 16"
+          ));
+        }
+      }
+      catch (Exception ex)
+      {
+        throw ex;
+      }
+    }
+    #endregion
+
+    #region TestHelper
+    /// <summary>
+    /// Faz uma rolagem um número especificado de vezes com entrada fixa
+    /// </summary>
+    /// <param name="timesToRoll">Quantidade de rolagens</param>
+    /// <param name="pinsKnockedDown">Entrada fixa</param>
+    static private void RollMany(int timesToRoll, int pinsKnockedDown)
+    {
+      for (int i = 0; i < timesToRoll; i++)
+      {
+        game.Roll(pinsKnockedDown);
       }
     }
     #endregion

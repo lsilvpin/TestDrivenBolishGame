@@ -33,7 +33,23 @@ namespace BolishGame
     /// <returns>Pontuação do jogador</returns>
     public int Score()
     {
-      return Rolls.Sum(roll => roll);
+      int sparePoints = 0;
+      for (int i = 0; i < 20; i += 2)
+      {
+        if (Rolls[i+1] + Rolls[i] == 10)
+        {
+          sparePoints += Rolls[i + 2];
+        }
+      }
+      return Rolls.Sum(roll => roll) + sparePoints;
+    }
+    /// <summary>
+    /// Reseta o jogo
+    /// </summary>
+    public void Reset()
+    {
+      Rolls = null;
+      Rolls = new List<int>();
     }
   }
 }
