@@ -17,6 +17,7 @@ namespace BolishGame
       AllOnes();
       OneSpare();
       OneStrike();
+      PerfectGame();
     }
 
     #region Tests
@@ -29,6 +30,8 @@ namespace BolishGame
       {
         Game _game = new Game();
         game = _game;
+
+        Console.WriteLine("Game created");
       }
       catch (Exception ex)
       {
@@ -46,6 +49,8 @@ namespace BolishGame
         {
           game.Roll(0);
         }
+
+        Console.WriteLine("Rolls are working");
       }
       catch (Exception ex)
       {
@@ -68,6 +73,9 @@ namespace BolishGame
             "Não passou pelo GutterGame, Score = ", game.Score()
           ));
         }
+
+        Console.WriteLine("GutterGame");
+        game.Result();
       }
       catch (Exception ex)
       {
@@ -90,6 +98,9 @@ namespace BolishGame
             "Não passou pelo AllOnes, Score = ", game.Score()
           ));
         }
+
+        Console.WriteLine("AllOnes");
+        game.Result();
       }
       catch (Exception ex)
       {
@@ -115,6 +126,9 @@ namespace BolishGame
             "Não passou pelo OneSpare, Score = ", game.Score(), " que é diferente de 16"
           ));
         }
+
+        Console.WriteLine("OneSpare");
+        game.Result();
       }
       catch (Exception ex)
       {
@@ -122,15 +136,14 @@ namespace BolishGame
       }
     }
     /// <summary>
-    /// Testa o caso em que ocorre um Strike
+    /// Testa o caso em que ocorre um Strike na primeira tentativa
     /// </summary>
     static private void OneStrike()
     {
       try
       {
         game.Reset();
-        game.Roll(10);
-        game.Roll(0);
+        game.RollStrike();
         game.Roll(3);
         game.Roll(4);
         game.RollMany(16, 0);
@@ -138,7 +151,32 @@ namespace BolishGame
         if (game.Score() != 24)
         {
           throw new Exception(String.Concat(
-            "Não passou pelo OneStrike, Score = ", game.Score(), " ao invés de 24"
+            "Não passou pelo OneStrikeAtFirstFrameRoll, Score = ", game.Score(), " ao invés de 24"
+          ));
+        }
+
+        Console.WriteLine("OneStrike");
+        game.Result();
+      }
+      catch (Exception ex)
+      {
+        throw ex;
+      }
+    }
+    /// <summary>
+    /// Testa o jogo perfeito, ondo o jogador faz Strikes em todas as oportunidades que tem
+    /// </summary>
+    static private void PerfectGame()
+    {
+      try
+      {
+        game.Reset();
+        game.RollMany(12, 10);
+
+        if (game.Score() != 300)
+        {
+          throw new Exception(String.Concat(
+            "Não passou no PerfectGame, Score = ", game.Score(), " que é diferente de 220"
           ));
         }
       }
@@ -146,6 +184,9 @@ namespace BolishGame
       {
         throw ex;
       }
+
+      Console.WriteLine("PerfectGame");
+      game.Result();
     }
     #endregion
   }
