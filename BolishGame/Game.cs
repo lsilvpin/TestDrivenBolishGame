@@ -27,6 +27,18 @@ namespace BolishGame
       Rolls.Add(pinsKnockedDown);
     }
     /// <summary>
+    /// Faz uma rolagem um número especificado de vezes com entrada fixa
+    /// </summary>
+    /// <param name="timesToRoll">Quantidade de rolagens</param>
+    /// <param name="pinsKnockedDown">Entrada fixa</param>
+    public void RollMany(int timesToRoll, int pinsKnockedDown)
+    {
+      for (int i = 0; i < timesToRoll; i++)
+      {
+        Roll(pinsKnockedDown);
+      }
+    }
+    /// <summary>
     /// É chamado no final do jogo
     /// Atribui pontuação a cada um dos 10 frames
     /// </summary>
@@ -34,14 +46,21 @@ namespace BolishGame
     public int Score()
     {
       int sparePoints = 0;
+      int strikePoints = 0;
       for (int i = 0; i < 20; i += 2)
       {
-        if (Rolls[i+1] + Rolls[i] == 10)
+        if (Rolls[i+1] + Rolls[i] == 10 &&
+          Rolls[i+1] != 10 && Rolls[i] != 10)
         {
           sparePoints += Rolls[i + 2];
         }
+
+        if (Rolls[i+1] == 10 || Rolls[i] == 10)
+        {
+          strikePoints += Rolls[i + 3] + Rolls[i + 2];
+        }
       }
-      return Rolls.Sum(roll => roll) + sparePoints;
+      return Rolls.Sum(roll => roll) + sparePoints + strikePoints;
     }
     /// <summary>
     /// Reseta o jogo
@@ -51,5 +70,7 @@ namespace BolishGame
       Rolls = null;
       Rolls = new List<int>();
     }
+
+    
   }
 }

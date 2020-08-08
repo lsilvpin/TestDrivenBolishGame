@@ -16,6 +16,7 @@ namespace BolishGame
       GutterGame();
       AllOnes();
       OneSpare();
+      OneStrike();
     }
 
     #region Tests
@@ -59,7 +60,7 @@ namespace BolishGame
       try
       {
         game.Reset();
-        RollMany(20, 0);
+        game.RollMany(20, 0);
 
         if (game.Score() != 0)
         {
@@ -81,7 +82,7 @@ namespace BolishGame
       try
       {
         game.Reset();
-        RollMany(20, 1);
+        game.RollMany(20, 1);
 
         if (game.Score() != 20)
         {
@@ -106,7 +107,7 @@ namespace BolishGame
         game.Roll(5);
         game.Roll(5);
         game.Roll(3);
-        RollMany(17, 0);
+        game.RollMany(17, 0);
 
         if (game.Score() != 16)
         {
@@ -120,19 +121,30 @@ namespace BolishGame
         throw ex;
       }
     }
-    #endregion
-
-    #region TestHelper
     /// <summary>
-    /// Faz uma rolagem um número especificado de vezes com entrada fixa
+    /// Testa o caso em que ocorre um Strike
     /// </summary>
-    /// <param name="timesToRoll">Quantidade de rolagens</param>
-    /// <param name="pinsKnockedDown">Entrada fixa</param>
-    static private void RollMany(int timesToRoll, int pinsKnockedDown)
+    static private void OneStrike()
     {
-      for (int i = 0; i < timesToRoll; i++)
+      try
       {
-        game.Roll(pinsKnockedDown);
+        game.Reset();
+        game.Roll(10);
+        game.Roll(0);
+        game.Roll(3);
+        game.Roll(4);
+        game.RollMany(16, 0);
+
+        if (game.Score() != 24)
+        {
+          throw new Exception(String.Concat(
+            "Não passou pelo OneStrike, Score = ", game.Score(), " ao invés de 24"
+          ));
+        }
+      }
+      catch (Exception ex)
+      {
+        throw ex;
       }
     }
     #endregion
